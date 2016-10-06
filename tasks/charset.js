@@ -14,18 +14,21 @@ module.exports = function (grunt) {
       to: 'Shift_JIS',
       fileTypes: {
         html5: {
+          type: 'html5',
           ext: ['.html'],
           detect: /<meta\s+charset=["']?.+?["']?\s*\/?>/i,
           replace: '<meta charset="{{charset}}">'
         },
         html4: {
+          type: 'html4',
           ext: ['.html'],
           detect: /<meta\s+http-equiv=["']?Content-Type["']?\scontent=["']?.*?charset=.+?["']?\s*\/?>/i,
           replace: '<meta http-equiv="Content-Type" content="text/html; charset={{charset}}">'
         },
         css: {
+          type: 'css',
           ext: ['.css'],
-          detect: /^@charset\s+(".+?"|'.+?')/,
+          detect: /^@charset\s+(".+?"|'.+?')/gi,
           replace: '@charset "{{charset}}"'
         }
       }
@@ -50,9 +53,15 @@ module.exports = function (grunt) {
           var detect;
           var replace;
           if (_.indexOf(type.ext, extension) !== -1) {
+
             detect = type.detect;
             replace = type.replace.replace('{{charset}}', options.to);
-            src = src.replace(detect, replace);
+
+            if(type === 'css' && src.match(detect)){
+              src = src.replace(detect, replace);
+            }else{
+              src = replace +';\n' + src;
+            }
           }
         });
 

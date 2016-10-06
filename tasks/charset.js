@@ -59,8 +59,6 @@ module.exports = function (grunt) {
             detect = type.detect;
             replace = type.replace.replace('{{charset}}', options.to);
 
-          console.log(fileType, src.match(detect));
-
             if(fileType === 'css' && src.match(detect)){
               src = src.replace(detect, replace);
             }else{

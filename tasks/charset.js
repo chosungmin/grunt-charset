@@ -50,17 +50,21 @@ module.exports = function (grunt) {
 
         // Replace charset code.
         _.forOwn(options.fileTypes, function (type) {
+          var fileType;
           var detect;
           var replace;
           if (_.indexOf(type.ext, extension) !== -1) {
 
+            fileType = type.type;
             detect = type.detect;
             replace = type.replace.replace('{{charset}}', options.to);
 
-            if(type === 'css' && src.match(detect)){
+          console.log(fileType, src.match(detect));
+
+            if(fileType === 'css' && src.match(detect)){
               src = src.replace(detect, replace);
             }else{
-              src = replace +';\n' + src;
+              src = replace +';' + src;
             }
           }
         });
